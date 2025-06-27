@@ -47,7 +47,7 @@ export class AuthService {
         typeof error === 'object' &&
         error !== null &&
         'code' in error &&
-        (error as any).code === '23505'
+        error.code === '23505'
       ) {
         throw new ConflictException("Bu email allaqachon ro'yxatdan o'tgan");
       }
