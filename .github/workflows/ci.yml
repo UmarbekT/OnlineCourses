@@ -1,0 +1,50 @@
+name: NestJS CI/CD
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Kodni klonlash
+        uses: actions/checkout@v3
+
+      - name: Node.js o'rnatish
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22.x
+
+      - name: Dependenciyalarni o'rnatish
+        run: npm ci
+
+      - name: Lint tekshirish
+        run: npm run lint
+
+      - name: Testlarni ishga tushirish
+        run: npm run test
+
+      - name: Build qilish
+        run: npm run build
+
+  deploy:
+    needs: build-test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/saftoWeb/to-do
+            git fetch origin
+            git checkout safto
+            git reset --hard origin/main
+            redis-cli
+            chmod +x init-safto.sh
+            ./init-safto.sh
