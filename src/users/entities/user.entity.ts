@@ -4,6 +4,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { userRole } from 'src/enums/user-role.enum';
 import { Enrollment } from 'src/enrollments/entities/enrollment.entity';
 import { Result } from 'src/results/entities/result.entity';
+import { Exclude } from 'class-transformer';
 
 export type UserRole = 'student' | 'admin';
 
@@ -25,7 +26,7 @@ export class User {
   email: string;
 
   @ApiProperty({ example: 'hashed-password', description: 'Hashlangan parol' })
-  @Column()
+  @Column({ select: false })
   password: string;
 
   @ApiProperty({

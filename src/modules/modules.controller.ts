@@ -30,7 +30,7 @@ export class ModulesController {
     return res.status(201).json({ status: 'success', data: module });
   }
   @UseGuards(JwtAuthGuard, EnrolledGuard)
-  @Get('/course/:courseId')
+  @Get('course/:courseId')
   async getByCourse(@Param('courseId') courseId: string, @Res() res: Response) {
     const modules = await this.modulesService.getByCourse(+courseId);
     return res.status(200).json({ status: 'success', data: modules });

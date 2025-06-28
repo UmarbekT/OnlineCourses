@@ -30,8 +30,12 @@ export class LessonsController {
     return res.status(201).json({ status: 'success', data: lesson });
   }
   @UseGuards(JwtAuthGuard, EnrolledGuard)
-  @Get('/module/:moduleId')
-  async getByModule(@Param('moduleId') moduleId: string, @Res() res: Response) {
+  @Get('/course/:courseId/module/:moduleId')
+  async getByModule(
+    @Param('moduleId') moduleId: string,
+    @Param('courseId') courseId: string,
+    @Res() res: Response,
+  ) {
     const lessons = await this.lessonsService.getByModule(+moduleId);
     return res.status(200).json({ status: 'success', data: lessons });
   }

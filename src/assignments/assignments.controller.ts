@@ -17,15 +17,17 @@ import { CreateAssignmentDto } from './dto/create-assignment.dto';
 import { ReviewAssignmentDto } from './dto/review-assignment.dto';
 import { Request, Response } from 'express';
 import { User } from 'src/users/entities/user.entity';
+import { EnrolledGuard } from 'src/shared/guards/entrolled.guard';
 
 @Controller('assignments')
 export class AssignmentsController {
   constructor(private readonly assignmentsService: AssignmentsService) {}
 
-  @UseGuards(JwtAuthGuard)
-  @Post('/modules/:moduleId/submit')
+  @UseGuards(JwtAuthGuard, EnrolledGuard)
+  @Post('courses/:courseId/modules/:moduleId/submit')
   async submit(
     @Param('moduleId') moduleId: string,
+    @Param('courseId') courseId: string,
     @Body() dto: CreateAssignmentDto,
     @Req() req: Request,
     @Res() res: Response,
@@ -38,10 +40,11 @@ export class AssignmentsController {
     return res.json({ status: 'success', data: result });
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Get('/modules/:moduleId')
+  @UseGuards(JwtAuthGuard, EnrolledGuard)
+  @Get('courses/:courseId/modules/:moduleId/subit')
   async getModuleAssignments(
     @Param('moduleId') moduleId: string,
+    @Param('courseId') courseId: string,
     @Req() req: Request & { user: User },
     @Res() res: Response,
   ) {

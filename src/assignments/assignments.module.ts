@@ -6,10 +6,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ModulesModule } from 'src/modules/modules.module';
 import { Module as ModuleEntity } from '../modules/entities/module.entity';
 import { User } from 'src/users/entities/user.entity';
+import { EnrollmentsModule } from 'src/enrollments/enrollments.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Assignment, ModuleEntity, User]),
     ModulesModule,
+    EnrollmentsModule,
   ],
   controllers: [AssignmentsController],
   providers: [AssignmentsService],
